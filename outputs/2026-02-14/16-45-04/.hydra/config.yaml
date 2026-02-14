@@ -1,0 +1,6 @@
+model:
+  name: wav2vec2-base
+  hf_id: facebook/wav2vec2-base
+random_init: false
+num_samples: 100
+output_dir: features

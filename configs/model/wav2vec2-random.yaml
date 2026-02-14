@@ -1,0 +1,3 @@
+name: "wav2vec2-base"
+hf_id: "facebook/wav2vec2-base"
+init_type: "random"

@@ -1,0 +1,20 @@
+model:
+  name: wav2vec2-base
+  hf_id: facebook/wav2vec2-base
+  random_init: false
+data:
+  hidden_states_path: features/${model.name}_hidden_states.npz
+  acoustic_targets_path: features/acoustic_targets.npz
+probing:
+  probe_id: ridge
+  alphas:
+  - 0.1
+  - 1.0
+  - 10.0
+  target_features:
+  - stft
+  - mel
+  - mfcc
+  layers:
+  - 0
+  - 1

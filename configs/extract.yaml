@@ -1,0 +1,6 @@
+defaults:
+  - model: wav2vec2
+  - _self_
+
+num_samples: 500
+output_dir: "features"
