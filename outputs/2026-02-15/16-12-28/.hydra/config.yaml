@@ -1,0 +1,10 @@
+model:
+  name: hubert
+  hf_id: facebook/hubert-large-ls960-ft
+  init_type: pretrained
+dataset:
+  name: nsynth
+  split: validation
+  hf_id: jg583/NSynth
+num_samples: 50
+output_dir: features

@@ -1,0 +1,4 @@
+name: librispeech
+split: validation
+hf_id: librispeech_asr
+subset: clean

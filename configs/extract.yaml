@@ -1,5 +1,6 @@
 defaults:
   - model: wav2vec2
+  - dataset: librispeech
   - _self_
 
 num_samples: 500

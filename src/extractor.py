@@ -1,7 +1,7 @@
 
 import numpy as np
 import torch
-from transformers import Wav2Vec2Model, Wav2Vec2Processor, Wav2Vec2Config
+from transformers import AutoModel, AutoFeatureExtractor, AutoConfig
 import librosa
 
 class FeatureExtractor:
@@ -21,7 +21,7 @@ class FeatureExtractor:
 
         self.model_id = model_id
         self.device = device
-        self.processor = Wav2Vec2Processor.from_pretrained(model_id) # NOTE - update when using more models
+        self.processor = AutoFeatureExtractor.from_pretrained(model_id) # NOTE - update when using more models
         self.lag = lag # NOTE - update when using more models
 
         self.hop_length = hop_length
@@ -30,10 +30,10 @@ class FeatureExtractor:
         self.n_mfcc = n_mfcc
 
         if random_init:
-            config = Wav2Vec2Config.from_pretrained(model_id)
-            self.model = Wav2Vec2Model(config).to(self.device)
+            config = AutoConfig.from_pretrained(model_id)
+            self.model = AutoModel.from_config(config).to(self.device)
         else:
-            self.model = Wav2Vec2Model.from_pretrained(model_id).to(self.device)
+            self.model = AutoModel.from_pretrained(model_id).to(self.device)
 
         self.model.eval()
 

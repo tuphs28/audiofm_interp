@@ -1,0 +1,2 @@
+- model=hubert
+- dataset=librispeech

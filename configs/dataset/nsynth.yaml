@@ -1,0 +1,4 @@
+name: nsynth
+split: validation
+hf_id: confit/nsynth-parquet
+subset: instrument

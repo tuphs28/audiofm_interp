@@ -1,0 +1,2 @@
+- model=wav2vec2
+- dataset=nsynth

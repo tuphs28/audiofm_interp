@@ -1,0 +1,11 @@
+model:
+  name: wav2vec2-base
+  hf_id: facebook/wav2vec2-base
+  init_type: pretrained
+dataset:
+  name: nsynth
+  split: validation
+  hf_id: confit/nsynth-parquet
+  subset: instrument
+num_samples: 500
+output_dir: features

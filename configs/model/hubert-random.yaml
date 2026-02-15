@@ -1,0 +1,3 @@
+name: "hubert-base"
+hf_id: "facebook/hubert-base-ls960"
+init_type: "random"

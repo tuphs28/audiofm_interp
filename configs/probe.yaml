@@ -1,10 +1,11 @@
 defaults:
   - model: wav2vec2
+  - dataset: librispeech
   - _self_
 
 data:
-  hidden_states_path: "features/${model.name}_${model.init_type}_hidden_states.npz"
-  acoustic_targets_path: "features/${model.name}_${model.init_type}_acoustic_targets.npz"
+  hidden_states_path: "features/${model.name}_${model.init_type}_${dataset.name}_hidden_states.npz"
+  acoustic_targets_path: "features/${model.name}_${model.init_type}_${dataset.name}_acoustic_targets.npz"
 
 probing:
   probe_id: "ridge"

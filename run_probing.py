@@ -45,7 +45,7 @@ def main(cfg: DictConfig):
             all_weights[target_feature][f"layer_{layer_idx}_intercepts"] = trained_probe_dict["probe_intercepts"]
             all_weights[target_feature][f"layer_{layer_idx}_r2"] = trained_probe_dict["individual_r2"]
 
-    results_dir = f"results/{cfg.model.name}_{cfg.model.init_type}_{cfg.probing.probe_id}"
+    results_dir = f"results/{cfg.model.name}_{cfg.model.init_type}_{cfg.dataset.name}_{cfg.probing.probe_id}"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
 

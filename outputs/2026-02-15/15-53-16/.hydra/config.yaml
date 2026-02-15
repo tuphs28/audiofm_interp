@@ -1,0 +1,6 @@
+model:
+  name: hubert
+  hf_id: facebook/hubert-large-ls960-ft
+  init_type: pretrained
+num_samples: 50
+output_dir: features

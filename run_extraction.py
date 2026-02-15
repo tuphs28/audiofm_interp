@@ -1,6 +1,7 @@
 import argparse
 import numpy as np
 import os
+from collections import defaultdict
 
 from datasets import load_dataset
 from tqdm import tqdm
@@ -19,16 +20,16 @@ def main(cfg: DictConfig):
 
     print("--- loading dataset ---")
     dataset = load_dataset(
-        "librispeech_asr", # NOTE - update with more datasets in future
-        "clean", 
-        split="validation", 
+        path=cfg.dataset.hf_id, 
+        name=cfg.dataset.get("subset", None), 
+        split=cfg.dataset.split,
         streaming=False
     )
 
     shuffled_dataset = dataset.shuffle(seed=42)
     subset = shuffled_dataset.select(range(cfg.num_samples)) 
 
-    all_hidden_states = {layer_idx: [] for layer_idx in range(13)} # NOTE - update when using different layers
+    all_hidden_states = defaultdict(list) 
     all_acoustic_targets = {feature_name: [] for feature_name in ["stft", "mel", "mfcc"]}
     subset = dataset.take(cfg.num_samples)
 
@@ -36,16 +37,16 @@ def main(cfg: DictConfig):
     for i, batch in enumerate(tqdm(subset, total=cfg.num_samples)):
         audio_array = batch["audio"]["array"]
         hidden_states, acoustic_targets = extractor.get_aligned_hidden_states_and_targets(audio_array)
-        for layer_idx in range(13):
-            all_hidden_states[layer_idx].append(hidden_states[layer_idx])
+        for layer_idx, hidden_state in hidden_states.items():
+            all_hidden_states[layer_idx].append(hidden_state.cpu().numpy())
         for feature_name in ["stft", "mel", "mfcc"]:
             all_acoustic_targets[feature_name].append(acoustic_targets[feature_name])
 
     print("--- saving features ---")
     final_hidden_states = {str(layer): np.concatenate(all_hidden_states[layer], axis=0) for layer in all_hidden_states.keys()}
     final_acoustic_targets = {target: np.concatenate(all_acoustic_targets[target], axis=0) for target in all_acoustic_targets.keys()}
-    hidden_states_path = f"features/{cfg.model.name}_{cfg.model.init_type}_hidden_states.npz"
-    acoustic_targets_path = f"features/{cfg.model.name}_{cfg.model.init_type}_acoustic_targets.npz"
+    hidden_states_path = f"features/{cfg.model.name}_{cfg.model.init_type}_{cfg.dataset.name}_hidden_states.npz"
+    acoustic_targets_path = f"features/{cfg.model.name}_{cfg.model.init_type}_{cfg.dataset.name}_acoustic_targets.npz"
     np.savez_compressed(hidden_states_path, **final_hidden_states)
     np.savez_compressed(acoustic_targets_path, **final_acoustic_targets)
 

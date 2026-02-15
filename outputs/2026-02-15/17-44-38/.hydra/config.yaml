@@ -1,0 +1,11 @@
+model:
+  name: hubert-base
+  hf_id: facebook/hubert-base-ls960
+  init_type: pretrained
+dataset:
+  name: nsynth
+  split: validation
+  hf_id: confit/nsynth-parquet
+  subset: instrument
+num_samples: 500
+output_dir: features

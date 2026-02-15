@@ -1,0 +1,36 @@
+model:
+  name: wav2vec2-base
+  hf_id: facebook/wav2vec2-base
+  init_type: random
+dataset:
+  name: nsynth
+  split: validation
+  hf_id: confit/nsynth-parquet
+  subset: instrument
+data:
+  hidden_states_path: features/${model.name}_${model.init_type}_${dataset.name}_hidden_states.npz
+  acoustic_targets_path: features/${model.name}_${model.init_type}_${dataset.name}_acoustic_targets.npz
+probing:
+  probe_id: ridge
+  alphas:
+  - 0.1
+  - 1.0
+  - 10.0
+  target_features:
+  - stft
+  - mel
+  - mfcc
+  layers:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
