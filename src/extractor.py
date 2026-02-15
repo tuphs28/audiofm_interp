@@ -54,6 +54,13 @@ class FeatureExtractor:
         aligned_hidden_states = {layer_idx: hidden_state[:min_frames, :][:-self.lag] for layer_idx, hidden_state in hidden_states.items()}
         aligned_acoustic_targets = {feature_name: feature[:min_frames, :][self.lag:] for feature_name, feature in accoustic_targets.items()}
 
+        if self.lag > 0:
+            aligned_hidden_states = {layer_idx: hidden_state[:min_frames, :][:-self.lag] for layer_idx, hidden_state in hidden_states.items()}
+            aligned_acoustic_targets = {feature_name: feature[:min_frames, :][self.lag:] for feature_name, feature in accoustic_targets.items()}
+        else:
+            aligned_hidden_states = {layer_idx: hidden_state[:min_frames, :] for layer_idx, hidden_state in hidden_states.items()}
+            aligned_acoustic_targets = {feature_name: feature[:min_frames, :] for feature_name, feature in accoustic_targets.items()}
+
         return aligned_hidden_states, aligned_acoustic_targets
     
 
@@ -80,12 +87,17 @@ class FeatureExtractor:
         sr: int = 16000
     ) -> dict[str, np.ndarray]:
 
-        stft = np.abs(librosa.stft(audio_array, n_fft=self.n_fft, hop_length=self.hop_length))
-        mel = librosa.feature.melspectrogram(y=audio_array, sr=sr, n_fft=self.n_fft, hop_length=self.hop_length, n_mels=self.n_mels)
-        mfcc = librosa.feature.mfcc(S=librosa.power_to_db(mel), n_mfcc=self.n_mfcc)
+        stft_mag = np.abs(librosa.stft(audio_array, n_fft=self.n_fft, hop_length=self.hop_length))
+        mel_power = librosa.feature.melspectrogram(y=audio_array, sr=sr, n_fft=self.n_fft, hop_length=self.hop_length, n_mels=self.n_mels)
+        
+        stft_db = librosa.amplitude_to_db(stft_mag, ref=np.max)
+        mel_db = librosa.power_to_db(mel_power, ref=np.max)
+        
+        mfcc = librosa.feature.mfcc(S=mel_db, n_mfcc=self.n_mfcc)
+        
         feature_dict = {
-            "stft": stft.T,
-            "mel": mel.T,
+            "stft": stft_db.T,
+            "mel": mel_db.T,
             "mfcc": mfcc.T
         }
 

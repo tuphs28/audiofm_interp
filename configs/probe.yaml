@@ -4,7 +4,7 @@ defaults:
 
 data:
   hidden_states_path: "features/${model.name}_${model.init_type}_hidden_states.npz"
-  acoustic_targets_path: "features/acoustic_targets.npz"
+  acoustic_targets_path: "features/${model.name}_${model.init_type}_acoustic_targets.npz"
 
 probing:
   probe_id: "ridge"

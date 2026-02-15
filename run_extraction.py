@@ -22,8 +22,12 @@ def main(cfg: DictConfig):
         "librispeech_asr", # NOTE - update with more datasets in future
         "clean", 
         split="validation", 
-        streaming=True
+        streaming=False
     )
+
+    shuffled_dataset = dataset.shuffle(seed=42)
+    subset = shuffled_dataset.select(range(cfg.num_samples)) 
+
     all_hidden_states = {layer_idx: [] for layer_idx in range(13)} # NOTE - update when using different layers
     all_acoustic_targets = {feature_name: [] for feature_name in ["stft", "mel", "mfcc"]}
     subset = dataset.take(cfg.num_samples)
