@@ -1,0 +1,2 @@
+- model=wavlm-random
+- dataset=librispeech

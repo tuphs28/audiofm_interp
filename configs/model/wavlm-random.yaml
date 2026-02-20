@@ -1,0 +1,3 @@
+name: "wavlm-base"
+hf_id: "microsoft/wavlm-base"
+init_type: "random"

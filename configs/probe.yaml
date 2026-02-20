@@ -11,5 +11,5 @@ probing:
   probe_id: "ridge"
   alphas: [0.1, 1.0, 10.0]
   target_regression_features: ["mfcc", "stft", "mel"]
-  target_classification_features: ["speaker_id"]
+  target_classification_features: []
   layers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
